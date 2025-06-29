@@ -4,6 +4,8 @@ import game.tictactoegame.dto.GameDto
 import game.tictactoegame.enums.GameStatus
 import game.tictactoegame.enums.Player
 import game.tictactoegame.exception.GameNotFoundException
+import game.tictactoegame.service.domain.Board
+import game.tictactoegame.service.domain.Game
 import game.tictactoegame.storage.GameStorage
 import game.tictactoegame.storage.entity.GameEntity
 import game.tictactoegame.util.BoardUtils.parseBoard
@@ -11,7 +13,7 @@ import game.tictactoegame.util.BoardUtils.serializeBoard
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
-import java.util.*
+import java.util.UUID
 
 @Service
 internal class GameService(private val gameStorage: GameStorage) {
@@ -28,23 +30,23 @@ internal class GameService(private val gameStorage: GameStorage) {
         return gameStorage.save(game).toDto()
     }
 
-    fun getGame(gameId: UUID): GameDto {
-        return gameStorage.findById(gameId)
+    fun getGame(gameId: UUID): GameDto =
+        gameStorage.findById(gameId)
             .orElseThrow { GameNotFoundException("Game not found") }.toDto()
-    }
 
     @Transactional
-    fun makeMove(gameId: UUID, row: Int, col: Int, player: Player): GameDto {
-        val gameEntity = gameStorage.findById(gameId).orElseThrow { GameNotFoundException("Game not found") }
-        val game = Game(
-            board = Board(cells = parseBoard(gameEntity.board).map { it.toMutableList() }),
-            currentPlayer = gameEntity.currentPlayer,
-            status = gameEntity.status,
-        ).makeMove(
-            row = row,
-            col = col,
-            player = player
-        )
-        return gameStorage.save(gameEntity.apply { update(game) }).toDto()
-    }
+    fun makeMove(gameId: UUID, row: Int, col: Int, player: Player): GameDto =
+        gameStorage.findById(gameId).orElseThrow { GameNotFoundException("Game not found") }
+            .let { gameEntity ->
+                val game = Game(
+                    board = Board(cells = parseBoard(gameEntity.board).map { it.toMutableList() }),
+                    currentPlayer = gameEntity.currentPlayer,
+                    status = gameEntity.status,
+                ).makeMove(
+                    row = row,
+                    col = col,
+                    player = player
+                )
+                gameEntity.apply { update(game) }.toDto()
+            }
 }

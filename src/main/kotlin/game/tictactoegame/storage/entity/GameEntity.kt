@@ -3,7 +3,7 @@ package game.tictactoegame.storage.entity
 import game.tictactoegame.dto.GameDto
 import game.tictactoegame.enums.GameStatus
 import game.tictactoegame.enums.Player
-import game.tictactoegame.service.Game
+import game.tictactoegame.service.domain.Game
 import game.tictactoegame.util.BoardUtils
 import game.tictactoegame.util.BoardUtils.serializeBoard
 import jakarta.persistence.Column

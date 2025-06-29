@@ -1,11 +1,11 @@
-package game.tictactoegame.service
+package game.tictactoegame.service.domain
 
 import game.tictactoegame.enums.GameStatus
 import game.tictactoegame.enums.Player
 import game.tictactoegame.exception.CellOccupiedException
+import game.tictactoegame.exception.GameFinishedException
 import game.tictactoegame.exception.InvalidBoardIndexException
 import game.tictactoegame.exception.InvalidTurnException
-
 
 internal class Game(
     val board: Board,
@@ -13,20 +13,18 @@ internal class Game(
     val status: GameStatus
 ) {
     fun makeMove(row: Int, col: Int, player: Player): Game {
+        if (status != GameStatus.IN_PROGRESS) throw GameFinishedException("Game is already finished")
         if (currentPlayer != player) throw InvalidTurnException("Not $player's turn")
-        if (board.isPositionValid(row = row,col = col).not()) throw InvalidBoardIndexException("Invalid move: row=$row, col=$col. Please select a valid position within the 3x3 board.")
+        if (board.isPositionValid(row = row, col = col).not()) throw InvalidBoardIndexException("Invalid move: row=$row, col=$col. Please select a valid position within the 3x3 board.")
         if (board.isCellOccupied(row = row, col = col)) throw CellOccupiedException("Cell occupied")
-        val updatedBoard = Board(board.getCells().map { it.toMutableList() })
-        updatedBoard.placeMove(row = row, col = col, player = player)
+        val updatedBoard = board.placeMove(row = row, col = col, player = player)
         val updatedStatus = checkStatus(
             player = player,
             board = updatedBoard
         )
-        val nextPlayer = if (updatedStatus == GameStatus.IN_PROGRESS) togglePlayer(currentPlayer) else currentPlayer
-
         return Game(
             board = updatedBoard,
-            currentPlayer = nextPlayer,
+            currentPlayer = togglePlayer(currentPlayer),
             status = updatedStatus
         )
     }

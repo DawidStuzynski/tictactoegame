@@ -5,8 +5,8 @@ import game.tictactoegame.enums.Player
 import game.tictactoegame.exception.CellOccupiedException
 import game.tictactoegame.exception.InvalidBoardIndexException
 import game.tictactoegame.exception.InvalidTurnException
-import game.tictactoegame.service.Board
-import game.tictactoegame.service.Game
+import game.tictactoegame.service.domain.Board
+import game.tictactoegame.service.domain.Game
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
