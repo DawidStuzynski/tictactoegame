@@ -17,6 +17,7 @@ The project was built quickly using a simple Controller-Service-Repository struc
 - **Optimistic Locking**: Used to handle rare concurrent updates without the overhead of pessimistic locking or the limitations of `synchronized`.
 - **Domain Models**: While the domain models are not tightly coupled to the Spring framework, they could be further refined to make them more reusable and independent. Utility methods like board serialization and parsing, currently in a utility class, could be moved to the domain layer to better align with domain-specific logic.
 - **Validation**: Instead of throwing exceptions for validation, it might be better to return validation results for more flexibility.
+- **Configuration**: In a real-world scenario, credentials like database username and password would not be hardcoded in the application properties file. Instead, they would be managed securely using environment variables or a secrets management tool.
 - **Testing**: Basic tests are in place, but additional tests for edge cases would improve reliability.
 
 Future work could focus on refining the domain models, improving validation mechanisms, and expanding test coverage.
