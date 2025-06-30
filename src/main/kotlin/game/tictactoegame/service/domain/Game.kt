@@ -1,7 +1,13 @@
 package game.tictactoegame.service.domain
 
 import game.tictactoegame.enums.GameStatus
+import game.tictactoegame.enums.GameStatus.DRAW
+import game.tictactoegame.enums.GameStatus.IN_PROGRESS
+import game.tictactoegame.enums.GameStatus.X_WINS
+import game.tictactoegame.enums.GameStatus.Y_WINS
 import game.tictactoegame.enums.Player
+import game.tictactoegame.enums.Player.X
+import game.tictactoegame.enums.Player.Y
 import game.tictactoegame.exception.CellOccupiedException
 import game.tictactoegame.exception.GameFinishedException
 import game.tictactoegame.exception.InvalidBoardIndexException
@@ -13,7 +19,7 @@ internal class Game(
     val status: GameStatus
 ) {
     fun makeMove(row: Int, col: Int, player: Player): Game {
-        if (status != GameStatus.IN_PROGRESS) throw GameFinishedException("Game is already finished")
+        if (status != IN_PROGRESS) throw GameFinishedException("Game is already finished")
         if (currentPlayer != player) throw InvalidTurnException("Not $player's turn")
         if (board.isPositionValid(row = row, col = col).not()) throw InvalidBoardIndexException("Invalid move: row=$row, col=$col. Please select a valid position within the 3x3 board.")
         if (board.isCellOccupied(row = row, col = col)) throw CellOccupiedException("Cell occupied")
@@ -41,17 +47,17 @@ internal class Game(
         )
 
         if (winConditions.any { it.all { cell -> cell == player } }) {
-            return if (player == Player.X) GameStatus.X_WINS else GameStatus.Y_WINS
+            return if (player == X) X_WINS else Y_WINS
         }
 
         if (cells.flatten().all { it != null }) {
-            return GameStatus.DRAW
+            return DRAW
         }
 
-        return GameStatus.IN_PROGRESS
+        return IN_PROGRESS
     }
 
     private fun togglePlayer(currentPlayer: Player): Player {
-        return if (currentPlayer == Player.X) Player.Y else Player.X
+        return if (currentPlayer == X) Y else X
     }
 }

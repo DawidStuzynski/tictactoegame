@@ -1,4 +1,4 @@
-package game.tictactoegame.game
+package game.tictactoegame.game.storage
 
 import game.tictactoegame.storage.GameStorage
 import game.tictactoegame.storage.entity.GameEntity

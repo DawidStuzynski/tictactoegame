@@ -1,13 +1,14 @@
 package game.tictactoegame.api
 
 import game.tictactoegame.api.request.MoveRequest
+import game.tictactoegame.BaseIntegrationTest
 import game.tictactoegame.enums.Player
 import io.restassured.http.ContentType
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
-import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.CoreMatchers
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -25,8 +26,8 @@ class GameControllerIntegrationTests : BaseIntegrationTest() {
             post("/games")
         } Then {
             statusCode(200)
-            body("currentPlayer", equalTo("X"))
-            body("status", equalTo("IN_PROGRESS"))
+            body("currentPlayer", CoreMatchers.equalTo("X"))
+            body("status", CoreMatchers.equalTo("IN_PROGRESS"))
         }
     }
 
@@ -50,7 +51,7 @@ class GameControllerIntegrationTests : BaseIntegrationTest() {
             get("/games/$gameId")
         } Then {
             statusCode(200)
-            body("id", equalTo(gameId.toString()))
+            body("id", CoreMatchers.equalTo(gameId.toString()))
         }
     }
 
@@ -77,8 +78,8 @@ class GameControllerIntegrationTests : BaseIntegrationTest() {
             post("/games/$gameId/move")
         } Then {
             statusCode(200)
-            body("currentPlayer", equalTo("Y"))
-            body("board[0][0]", equalTo("X"))
+            body("currentPlayer", CoreMatchers.equalTo("Y"))
+            body("board[0][0]", CoreMatchers.equalTo("X"))
         }
     }
 }

@@ -1,4 +1,4 @@
-package game.tictactoegame.api
+package game.tictactoegame
 
 import io.restassured.RestAssured
 import org.junit.jupiter.api.BeforeAll

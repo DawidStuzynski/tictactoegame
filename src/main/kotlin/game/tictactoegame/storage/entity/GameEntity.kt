@@ -9,6 +9,7 @@ import game.tictactoegame.util.BoardUtils.serializeBoard
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
+import jakarta.persistence.EnumType.STRING
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Table
@@ -26,9 +27,9 @@ internal data class GameEntity(
     @Column(columnDefinition = "jsonb")
     @JdbcTypeCode(SqlTypes.JSON)
     var board: String,
-    @Enumerated(EnumType.STRING)
+    @Enumerated(STRING)
     var currentPlayer: Player,
-    @Enumerated(EnumType.STRING)
+    @Enumerated(STRING)
     var status: GameStatus,
     @Version
     val version: Long = 0,
