@@ -8,7 +8,6 @@ import game.tictactoegame.util.BoardUtils
 import game.tictactoegame.util.BoardUtils.serializeBoard
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
 import jakarta.persistence.EnumType.STRING
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
